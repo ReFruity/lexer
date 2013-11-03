@@ -38,7 +38,9 @@ public class IntReader extends TokenReader {
         if (len == 0 || !Character.isDigit(input.charAt(0)))
             return Radix.NAN;
 
-		if (input.charAt(0) == '0') { 
+		if (input.charAt(0) == '0') {
+            if (len == 1)
+                return Radix.DECIMAL;
 			char secondChar = Character.toUpperCase(input.charAt(1));
 			if (secondChar == 'B') { //binary
 				if (len == 2 || !isValidSymbol(Radix.BINARY, input.charAt(2))) 
@@ -68,9 +70,6 @@ public class IntReader extends TokenReader {
 	
 	public Token tryReadToken(String input) {
 		int len = input.length();
-
-		if (len == 1 && input.charAt(0) == '0')
-			return new Token("i", "0", 0);
 		
 		Radix plausibleRadix = determineRadix(input);
 
