@@ -2,6 +2,7 @@ package tests;
 
 import junit.framework.TestCase;
 import lexer.*;
+import java.util.ArrayList;
 
 public class SimpleLexerTest extends TestCase {
     /*
@@ -12,62 +13,73 @@ public class SimpleLexerTest extends TestCase {
      *	"ws" - whitespace
      *	"kw" - keyword from wordreader
      */
-    public void testLexer() {
+    public void testSimpleLexer() {
+        Tester legitTester = new Tester(
+                new IdentifierReader(), new IntReader(), new WhitespaceReader(),
+                new WordReader("word", false), new WordReader("butanumber", true)
+        );
+        try {
+            legitTester.checkOutput("0x42 isnta word ButANumber 6_6L",
+                    new Token("i", "0x42", 66), new Token("ws", " "),
+                    new Token("id", "isnta"), new Token("ws", " "),
+                    new Token("kw", "word"), new Token("ws", " "),
+                    new Token("kw", "ButANumber"), new Token("ws", " "),
+                    new Token("l", "6_6L", 66L)
+            );
 
+            legitTester.checkOutput("");
+        }
+        catch (SimpleLexer.UnknownTokenException ex) {
+              fail();
+        }
     }
 
-    public void testReadNextToken() {
-        checkNextToken("123 abc", "123", "i");
-        checkNextToken("0x5_FL abc", "0x5_FL", "l");
-        checkNextToken("qwer 5", "qwer", "id");
-        checkNextToken("wordify  5", "wordify", "id");
-        checkNextToken(" 	qwer 5", " 	", "ws"); //it's space and tab
-        checkNextToken("word ify  5", "word", "kw");
-        //assert results are null
-        checkNextToken("");
-        checkNextToken("-da");
-    }
+    public void testExceptions() {
+        Tester exTester = new Tester(new IntReader(), new WhitespaceReader());
+        Tester exTester2 = new Tester(new IdentifierReader(), new WhitespaceReader(), new IntReader());
+        try {
+            exTester.checkOutput("05 abc",
+                    new Token("i", "05", 5), new Token("ws", " "),
+                    new Token("id", "abc")
+            );
 
-    public void testHasNextTokens() {
-        checkHasNextTokens("word", true);
-        checkHasNextTokens(" ", true);
-        checkHasNextTokens("+", false);
-        checkHasNextTokens("", false);
+            fail();
+        }
+        catch (SimpleLexer.UnknownTokenException ex) {
+            assertEquals("abc", ex.where);
+        }
+        try {
+            exTester2.checkOutput("  Id42 0B1 +",
+                    new Token("ws", " "), new Token("ws", " "),
+                    new Token("id", "Id42"), new Token("ws", " "),
+                    new Token("i", "0B1", 1), new Token("ws", " ")
+            );
+
+            fail();
+        }
+        catch (SimpleLexer.UnknownTokenException ex) {
+            assertEquals("+", ex.where);
+        }
     }
 
     private class Tester {
         private SimpleLexer lexer;
+        TokenReader[] tokenReadersArray;
 
-        public Tester(String input) {
-            lexer = new SimpleLexer(input,
-                    new IdentifierReader(), new IntReader(), new WhitespaceReader(), new WordReader("word", false)
-            );
+        public Tester(TokenReader... tokenReadersArray) {
+            this.tokenReadersArray = tokenReadersArray;
         }
 
-        public Token readNextToken() {
-            return lexer.readNextToken();
+        private void checkOutput(String input, Token... expectedTokensArray) throws SimpleLexer.UnknownTokenException {
+            lexer = new SimpleLexer(input, tokenReadersArray);
+            ArrayList<Token> readTokensList = new ArrayList<Token>();
+            while (lexer.hasNextTokens())
+                readTokensList.add(lexer.readNextToken());
+
+            Token[] readTokensArray = new Token[readTokensList.size()];
+            readTokensList.toArray(readTokensArray);
+            for (int i = 0; i < expectedTokensArray.length; i++)
+                assertEquals(expectedTokensArray[i], readTokensArray[i]);
         }
-
-        public boolean hasNextTokens() {
-            return lexer.hasNextTokens();
-        }
     }
-
-    private void checkNextToken(String input, String expectedText, String expectedType) {
-        Tester tester = new Tester(input);
-        Token readToken = tester.readNextToken();
-        assertEquals(expectedText, readToken.getText());
-        assertEquals(expectedType, readToken.getType());
-    }
-
-    private void checkNextToken(String input) {
-        Tester nullTester = new Tester(input);
-        assertNull(nullTester.readNextToken());
-    }
-
-    private void checkHasNextTokens(String input, boolean expected) {
-        Tester presenceTester = new Tester(input);
-        assertEquals(expected, presenceTester.hasNextTokens());
-    }
-
 }

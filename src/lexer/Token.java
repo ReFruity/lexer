@@ -5,14 +5,7 @@ public class Token {
     private final String text;
     private final String type;
 
-    /**
-     * @param type  ������, �����, �������� ����� � �.�. ������������ Reader-��,
-     *              ��������� �����.
-     * @param text  ��������� ��������� ������, ������� ������������ � ���� �����.
-     * @param value ��� ����� � int ��� double, ��� ����� � ������ � �.�.
-     */
     public Token(String type, String text, Object value) {
-        super();
         this.type = type;
         this.value = value;
         this.text = text;
@@ -39,6 +32,7 @@ public class Token {
         return type + "[" + text + "]";
     }
 
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
         Token other = (Token) obj;

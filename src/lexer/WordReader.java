@@ -4,19 +4,16 @@ public class WordReader extends TokenReader {
     private final String word;
     private final boolean ignoreCase;
 
-    // TODO ������ 1: �������� �������� ignoreCase ������������������ � ��������
     public WordReader(String word, boolean ignoreCase) {
         this.word = word;
         this.ignoreCase = ignoreCase;
     }
 
     public Token tryReadToken(String input) {
-        if (this.ignoreCase == true) {
-            input = input.toLowerCase();
-            if (input.startsWith(word.toLowerCase()))
-                return new Token("kw", word);
-        } else if (input.startsWith(word))
-            return new Token("kw", word);
+        int len = word.length();
+        if (word.regionMatches(ignoreCase, 0, input, 0, len))
+            return new Token("kw", input.substring(0, len));
+
         return null;
     }
 

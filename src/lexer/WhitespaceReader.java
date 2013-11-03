@@ -1,11 +1,6 @@
 package lexer;
 
 public class WhitespaceReader extends TokenReader {
-    /**
-     * ������ � ������ ������ ������������ ���������� ���������� ��������.
-     *
-     * @return ���������� ����������� ������� ������.
-     */
     public Token tryReadToken(String input) {
         int len = input.length();
         if (len == 0 || !Character.isWhitespace(input.charAt(0))) return null;
