@@ -34,6 +34,7 @@ public class IntReaderTest extends TestCase {
         checkInt("32_15", "32_15", 3215);
         checkInt("123l", "123l", 123L);
         checkInt("123 qwe", "123", 123);
+        checkInt("5+6", "5", 5);
         checkInt("9223372036854775807L", "9223372036854775807L", 9223372036854775807L);
     }
 

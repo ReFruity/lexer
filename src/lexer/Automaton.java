@@ -3,6 +3,7 @@ package lexer;
 import java.util.HashMap;
 
 abstract public class Automaton {
+    private int startingState;
     private int[] endStates;
     private HashMap<Symbol, int[]> transitions;
     private int currentState;
@@ -39,7 +40,7 @@ abstract public class Automaton {
     }
 
     protected Automaton (int startingState, int errorState, int successState) {
-        currentState = startingState;
+        this.startingState = startingState;
         endStates = new int[2];
         endStates[0] = errorState;
         endStates[1] = successState;
@@ -56,6 +57,7 @@ abstract public class Automaton {
 
     protected String calculateMaxPrefix(String input) {
         int len = input.length(), i;
+        currentState = startingState;
         for(i = 0; i < len && !inEndState(); i++) {
             char nextChar = input.charAt(i);
             Symbol nextSymbol = new Symbol(false, nextChar);
@@ -68,12 +70,13 @@ abstract public class Automaton {
 
         if(!inEndState()) {//no \n in input
             currentState = transitions.get(new Symbol(false, '\n'))[currentState];
+            i++;
         }
 
         assert(inEndState());
 
         if(currentState == endStates[1])
-            return input.substring(0, i);
+            return input.substring(0, i-1);
         else
             return null;
     }
