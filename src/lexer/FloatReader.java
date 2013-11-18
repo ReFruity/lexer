@@ -1,17 +1,22 @@
 package lexer;
 
 public class FloatReader extends Automaton {
+    private final String digits = "0123456789";
+
     public FloatReader() {
-        super(0, 0, 0);
-        addTransition(' ', 0);
-        addGeneralTransition(0);
+        super("float", "double");
+        addTransition("start", digits, "digits");
     }
 
     public Token tryReadToken(String input) {
         String prefix = calculateMaxPrefix(input);
         if(prefix != null)
-            return new Token("f", prefix);
-        else
-            return null;
+            if (getState().equals("float")) {
+                return new Token("f", prefix, Float.parseFloat(prefix));
+            }
+            else if (getState().equals("double")) {
+                return new Token("d", prefix, Double.parseDouble(prefix));
+            }
+        return null;
     }
 }
