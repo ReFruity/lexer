@@ -10,6 +10,7 @@ public class FloatReaderTest extends TestCase {
     public void testNotFloats() {
         assertNull(reader.tryReadToken(""));
         assertNull(reader.tryReadToken("."));
+        assertNull(reader.tryReadToken(".f"));
         assertNull(reader.tryReadToken("._5"));
         assertNull(reader.tryReadToken("0"));
         assertNull(reader.tryReadToken("12e"));

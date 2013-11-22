@@ -77,7 +77,8 @@ abstract public class Automaton {
                         lastSuccessIndex = i;
                     }
                 }
-                else { //transition isn't specified anywhere: to error state by default
+                else {
+                    //transition isn't specified anywhere: to error state by default
                     currentState = "error";
                     break;
                 }
