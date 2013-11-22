@@ -3,17 +3,20 @@ package lexer;
 public class EndOfLineCommentReader extends Automaton {
 
     public EndOfLineCommentReader() {
-        super(0, 3, 4);
+        super("comment");
 
-        addTransition('/', 1,2,2);
-        addTransition('\n', 3,3,4);
-        addGeneralTransition(3,3,2);
+        addTransition("start", "/", "slash");
+
+        addTransition("slash", "/", "comment");
+
+        addTransition("comment", "\n", "error");
+        addGeneralTransition("comment", "comment");
     }
 
     public Token tryReadToken(String input) {
         String prefix = calculateMaxPrefix(input);
         if(prefix != null)
-            return new Token("eoflc", prefix);
+            return new Token("eolc", prefix);
         else
             return null;
     }

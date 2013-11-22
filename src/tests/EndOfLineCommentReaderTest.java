@@ -27,7 +27,7 @@ public class EndOfLineCommentReaderTest extends TestCase {
     }
 
     private void checkLine(String input, String expectedText) {
-        Token expectedToken = new Token("eoflc", expectedText);
+        Token expectedToken = new Token("eolc", expectedText);
         assertEquals(expectedToken, reader.tryReadToken(input));
     }
 }

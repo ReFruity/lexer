@@ -4,8 +4,35 @@ public class FloatReader extends Automaton {
     private final String digits = "0123456789";
 
     public FloatReader() {
-        super("float", "double");
-        addTransition("start", digits, "digits");
+        super("fractional", "signedInt", "float", "double");
+
+        link("double", "signedInt", "fractional");
+
+        addTransition("start", digits, "integer");
+        addTransition("start", ".", "dot");
+
+        addTransition("integer", digits, "integer");
+        addTransition("integer", "eE", "expIndicator");
+        addTransition("integer", "fF", "float");
+        addTransition("integer", "dD", "double");
+        addTransition("integer", ".", "fractional");
+
+        addTransition("dot", digits, "fractional");
+
+        addTransition("fractional", digits, "fractional");
+        addTransition("fractional", "eE", "expIndicator");
+        addTransition("fractional", "fF", "float");
+        addTransition("fractional", "dD", "double");
+
+        addTransition("expIndicator", "+-", "sign");
+        addTransition("expIndicator", digits, "signedInt");
+
+        addTransition("sign", digits, "signedInt");
+
+        addTransition("signedInt", digits, "signedInt");
+        addTransition("signedInt", "fF", "float");
+        addTransition("signedInt", "dD", "double");
+
     }
 
     public Token tryReadToken(String input) {
