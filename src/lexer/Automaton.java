@@ -4,16 +4,14 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 abstract public class Automaton {
-    private int lastSuccessIndex;
-    private String currentState, lastSuccessState;
+    private String lastSuccessState;
     private HashMap<String, HashMap<Character, String>> transitions;
     private HashMap<String, String> generalTransitions;
     private HashMap<String, String> linkedStates;
     private HashSet<String> finalStates;
 
     protected Automaton (String ... finalStates) {
-        lastSuccessState = currentState = null;
-        lastSuccessIndex = 0;
+        lastSuccessState = null;
         transitions = new HashMap<String, HashMap<Character, String>>();
         generalTransitions = new HashMap<String, String>();
         linkedStates = new HashMap<String, String>();
@@ -22,7 +20,6 @@ abstract public class Automaton {
             this.finalStates.add(i);
             linkedStates.put(i, i);
         }
-        linkedStates.put("error", "error");
     }
 
     protected void addTransition(String from, String characters, String to) {
@@ -33,8 +30,8 @@ abstract public class Automaton {
         else
             bufMap = new HashMap<Character, String>();
 
-        for(int i = 0; i < characters.length(); i++)
-            bufMap.put(characters.charAt(i), to);
+        for(char i : characters.toCharArray())
+            bufMap.put(i, to);
 
         transitions.put(from, bufMap);
     }
@@ -53,9 +50,9 @@ abstract public class Automaton {
     }
 
     protected String calculateMaxPrefix(String input) {
-        currentState = "start";
+        String currentState = "start";
         lastSuccessState = "error";
-        lastSuccessIndex = 0;
+        int lastSuccessIndex = 0;
         int len = input.length(), i;
 
         for(i = 0; i < len && !currentState.equals("error"); i++) {
@@ -80,7 +77,6 @@ abstract public class Automaton {
                 else {
                     //transition isn't specified anywhere: to error state by default
                     currentState = "error";
-                    break;
                 }
         }
 
