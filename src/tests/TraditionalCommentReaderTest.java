@@ -1,8 +1,8 @@
 package tests;
 
 import junit.framework.TestCase;
-import lexer.TraditionalCommentReader;
 import lexer.Token;
+import lexer.TraditionalCommentReader;
 
 public class TraditionalCommentReaderTest extends TestCase {
     TraditionalCommentReader reader = new TraditionalCommentReader();

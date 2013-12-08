@@ -1,6 +1,6 @@
 package lexer;
 
-public class TraditionalCommentReader extends Automaton {
+public class TraditionalCommentReader extends TokenReader {
     public TraditionalCommentReader() {
         super("comment", "asterisk", "final");
 

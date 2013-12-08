@@ -1,11 +1,11 @@
 package lexer;
 
-public class FloatReader extends Automaton {
+public class FloatReader extends TokenReader {
     private final String digits = "0123456789";
 
     public FloatReader() {
         super("fractional", "signedInt", "float", "double");
-
+        
         link("double", "signedInt", "fractional");
 
         addTransition("start", digits, "integer");

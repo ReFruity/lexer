@@ -1,6 +1,6 @@
 package lexer;
 
-public class EndOfLineCommentReader extends Automaton {
+public class EndOfLineCommentReader extends TokenReader {
 
     public EndOfLineCommentReader() {
         super("comment");
