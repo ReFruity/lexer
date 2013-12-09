@@ -39,9 +39,16 @@ public class IntReader extends TokenReader {
             return Radix.NAN;
 
         if (input.charAt(0) == '0') {
-            if (len == 1)
+            if (len == 1) {
                 return Radix.DECIMAL;
+            }
+            
             char secondChar = Character.toUpperCase(input.charAt(1));
+
+            if (!(Character.isDigit(secondChar) || Character.isLetter(secondChar))) {
+                return Radix.DECIMAL;
+            }
+            
             if (secondChar == 'B') { //binary
                 if (len == 2 || !isValidSymbol(Radix.BINARY, input.charAt(2)))
                     return Radix.NAN;
@@ -84,7 +91,12 @@ public class IntReader extends TokenReader {
         String num = javaNum.replaceAll("_", "").substring(plausibleRadix.shift - 1);
 
         if (isValidSymbol(plausibleRadix, lastChar))
-            return new Token("i", javaNum, Integer.parseInt(num, plausibleRadix.representation));
+            try {
+                return new Token("i", javaNum, Integer.parseInt(num, plausibleRadix.representation));
+            }
+            catch (NumberFormatException e) {
+                return new Token ("l", javaNum, Long.parseLong(num, plausibleRadix.representation));
+            }
         else if (lastChar == 'L') {
             num = num.substring(0, num.length() - 1);
             return new Token("l", javaNum, Long.parseLong(num, plausibleRadix.representation));

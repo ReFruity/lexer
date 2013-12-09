@@ -29,6 +29,8 @@ public class IntReaderTest extends TestCase {
 
     public void testDecimal() {
         checkInt("0", "0", 0);
+        checkInt("0;", "0", 0);
+        checkInt("0+", "0", 0);
         checkInt("0l qwe", "0l", 0l);
         checkInt("1", "1", 1);
         checkInt("32_15", "32_15", 3215);
@@ -44,6 +46,7 @@ public class IntReaderTest extends TestCase {
         checkInt("0XF_0 asdf", "0XF_0", 240);
         checkInt("0xAl", "0xAl", 10L);
         checkInt("0XBL", "0XBL", 11L);
+        checkInt("0xFFFFFFFF;", "0xFFFFFFFF", 4294967295L);
     }
 
     public void testBinary() {

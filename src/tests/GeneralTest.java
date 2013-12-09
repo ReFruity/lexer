@@ -21,6 +21,7 @@ public class GeneralTest extends TestCase {
         TokenReader[] kwReaders = buildKeywordReaders(Keywords.get());
                 
         TokenReader[] tokenReaders = {
+            new AnnotationReader(),
             new CharacterReader(),
             new EndOfLineCommentReader(),
             new FloatReader(),
@@ -28,7 +29,6 @@ public class GeneralTest extends TestCase {
             new IntReader(),
             new NullReader(),
             new OperatorReader(),
-            new PreAnReader(),
             new SeparatorReader(),
             new StringReader(),
             new TraditionalCommentReader(),
