@@ -46,7 +46,7 @@ public class IntReaderTest extends TestCase {
         checkInt("0XF_0 asdf", "0XF_0", 240);
         checkInt("0xAl", "0xAl", 10L);
         checkInt("0XBL", "0XBL", 11L);
-        checkInt("0xFFFFFFFF;", "0xFFFFFFFF", 4294967295L);
+        checkInt("0xFFFFFFFF;", "0xFFFFFFFF", -1);
     }
 
     public void testBinary() {

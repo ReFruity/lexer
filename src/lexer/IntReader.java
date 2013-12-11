@@ -95,7 +95,7 @@ public class IntReader extends TokenReader {
                 return new Token("i", javaNum, Integer.parseInt(num, plausibleRadix.representation));
             }
             catch (NumberFormatException e) {
-                return new Token ("l", javaNum, Long.parseLong(num, plausibleRadix.representation));
+                return new Token ("i", javaNum, (int)Long.parseLong(num, plausibleRadix.representation));
             }
         else if (lastChar == 'L') {
             num = num.substring(0, num.length() - 1);

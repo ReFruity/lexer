@@ -7,12 +7,24 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class GeneralTest extends TestCase {
+    public void testTokenReader() throws IOException {
+        testFile(".\\src\\javasrc\\TokenReader.java.resource");
+        //Done: 0.115s -> 0.063
+    }
+    
     public void testCharacterLibrary() throws IOException {
-        testFile("C:\\Users\\username\\IdeaProjects\\lexer\\src\\javasrc\\Character.java.resource");
+        testFile(".\\src\\javasrc\\Character.java.resource");
+        //Done: 1m 22s -> 5s
     }
 
     public void testFilesLibrary() throws IOException {
-        testFile("C:\\Users\\username\\IdeaProjects\\lexer\\src\\javasrc\\Files.java.resource");
+        testFile(".\\src\\javasrc\\Files.java.resource");
+        //Done: 11s -> 1s
+    }
+
+    public void testBigDecimalLibrary() throws IOException {
+        testFile(".\\src\\javasrc\\BigDecimal.java.resource");
+        //Done: 39s -> 3s
     }
 
     private void testFile(String source) throws IOException {
@@ -37,13 +49,20 @@ public class GeneralTest extends TestCase {
 
         SimpleLexer lexer = new SimpleLexer(entireFile, joinArrays(tokenReaders, kwReaders));
         
+        String resultString ="";
+        int tokensNum = 0;
+        
         try {
             while(lexer.hasNextTokens()) {
-                lexer.readNextToken();
+                resultString += lexer.readNextToken().getText();
+                tokensNum++;
             }
         } catch (SimpleLexer.UnknownTokenException e) {
             fail("Unknown token at: " + e.where + "\n");
         }
+        
+        assertEquals(entireFile, resultString);
+        assertEquals(tokensNum >= entireFile.length()/30, true);
     }
 
     private String readEntireFile(String source) throws IOException {

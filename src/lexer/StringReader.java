@@ -14,7 +14,7 @@ public class StringReader extends TokenReader {
         addGeneralTransition("string", "string");
 
         addTransition("escapeSequence", "u", "utf16");
-        addTransition("escapeSequence", "btnfr\"\'\\", "simpleEscape");
+        addTransition("escapeSequence", "btnfr\"\'\\", "string");
         addTransition("escapeSequence", "0123", "shortOctalEscape");
         addTransition("escapeSequence", "4567", "octalEscape");
 
