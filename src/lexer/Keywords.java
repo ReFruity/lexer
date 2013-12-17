@@ -1,5 +1,6 @@
 package lexer;
 
+import java.util.List;
 import java.util.Arrays;
 
 public class Keywords {
@@ -12,11 +13,18 @@ public class Keywords {
         "catch", "extends", "int", "short", "try", "char", "final", 
         "interface", "static", "void", "class", "finally", "long", 
         "strictfp", "volatile", "const", "float", "native", "super", 
-        "while",            
+        "while",
     };
     
+    private static List keywordsList = Arrays.asList(keywords);
+    
+    public Keywords () {
+        keywordsList = Arrays.asList(keywords);
+    }
+    
     public static boolean contain(String keyword) {
-        return Arrays.asList(keywords).contains(keyword);
+        return keywordsList.contains(keyword);
+        //TODO: Revise this operation
     }
     
     public static String[] get() {

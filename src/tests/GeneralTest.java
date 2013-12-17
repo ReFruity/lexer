@@ -27,10 +27,22 @@ public class GeneralTest extends TestCase {
         //Done: 39s -> 3s
     }
 
+    public void testLargeLibrary() throws IOException {
+        testFile(".\\src\\javasrc\\Large.java.resource");
+        //1320kb
+        //Done: ??s -> 1m 49 s
+    }
+
+    public void test1mbLibrary() throws IOException {
+        testFile(".\\src\\javasrc\\1mb.java.resource");
+        //1000kb
+        //Done: ??s -> 1m
+    }
+
     private void testFile(String source) throws IOException {
         String entireFile = readEntireFile(source);
         
-        TokenReader[] kwReaders = buildKeywordReaders(Keywords.get());
+        //TokenReader[] kwReaders = buildKeywordReaders(Keywords.get());
                 
         TokenReader[] tokenReaders = {
             new AnnotationReader(),
@@ -39,6 +51,7 @@ public class GeneralTest extends TestCase {
             new FloatReader(),
             new IdentifierReader(),
             new IntReader(),
+            new KeywordReader(),
             new NullReader(),
             new OperatorReader(),
             new SeparatorReader(),
@@ -46,10 +59,12 @@ public class GeneralTest extends TestCase {
             new TraditionalCommentReader(),
             new WhitespaceReader(),
         };
-
-        SimpleLexer lexer = new SimpleLexer(entireFile, joinArrays(tokenReaders, kwReaders));
         
-        String resultString ="";
+       // tokenReaders = joinArrays(tokenReaders, kwReaders);
+
+        SimpleLexer lexer = new SimpleLexer(entireFile, tokenReaders);
+        
+        String resultString = "";
         int tokensNum = 0;
         
         try {
@@ -61,6 +76,7 @@ public class GeneralTest extends TestCase {
             fail("Unknown token at: " + e.where + "\n");
         }
         
+        System.out.println("Number of tokens in test: " + tokensNum + ".");
         assertEquals(entireFile, resultString);
         assertEquals(tokensNum >= entireFile.length()/30, true);
     }
@@ -74,14 +90,15 @@ public class GeneralTest extends TestCase {
             contents.append(buffer, 0, read);
             read = in.read(buffer);
         } while (read >= 0);
+        System.out.println("Done reading file.");
         return contents.toString();
-        //return new Scanner(new File(source)).useDelimiter("\\A").next(); //very slow
     }
     
     private TokenReader[] joinArrays(TokenReader[] array1, TokenReader[] array2) {
         TokenReader[] result = new TokenReader[array1.length + array2.length];
         System.arraycopy(array1, 0, result, 0, array1.length);
         System.arraycopy(array2, 0, result, array1.length, array2.length);
+        System.out.println("Done joining arrays.");
         return result;
     }
     
@@ -90,6 +107,7 @@ public class GeneralTest extends TestCase {
         for(int i = 0; i < keywords.length; i++) {
             kwReaders[i] = new WordReader(keywords[i], false);
         }
+        System.out.println("Done building keyword readers.");
         return kwReaders;
     }
 }
