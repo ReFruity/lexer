@@ -41,8 +41,8 @@ public class StringReader extends TokenReader {
         addTransition("string", "\"", "final");
     }
 
-    public Token tryReadToken(String input) {
-        String prefix = calculateMaxPrefix(input);
+    public Token tryReadToken(String input, int offset) {
+        String prefix = calculateMaxPrefix(input, offset);
         if(prefix != null)
             return new Token("str", prefix);
         else

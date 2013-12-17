@@ -13,11 +13,10 @@ public class SimpleLexer {
 
     public Token readNextToken() throws UnknownTokenException {
         Token maxToken = new Token("e", "");
-        String suffix = sourceString.substring(offset);
-        //TODO: Revise this operation
+        //String suffix = sourceString.substring(offset);
         boolean tokenWasSuccessfullyRead = false;
         for (TokenReader i : tokenReadersArray) {
-            Token currentToken = i.tryReadToken(suffix);
+            Token currentToken = i.tryReadToken(sourceString, offset);
             if (currentToken != null && currentToken.getText().length() > maxToken.getText().length()) {
                 maxToken = currentToken;
                 tokenWasSuccessfullyRead = true;

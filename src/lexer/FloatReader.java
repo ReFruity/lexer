@@ -35,8 +35,8 @@ public class FloatReader extends TokenReader {
 
     }
 
-    public Token tryReadToken(String input) {
-        String prefix = calculateMaxPrefix(input);
+    public Token tryReadToken(String input, int offset) {
+        String prefix = calculateMaxPrefix(input, offset);
         if(prefix != null)
             if (getState().equals("float")) {
                 return new Token("f", prefix, Float.parseFloat(prefix));

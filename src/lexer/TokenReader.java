@@ -49,13 +49,13 @@ abstract public class TokenReader {
         return linkedStates.get(lastSuccessState);
     }
 
-    protected String calculateMaxPrefix(String input) {
+    protected String calculateMaxPrefix(String input, int offset) {
         String currentState = "start";
         lastSuccessState = "error";
         int lastSuccessIndex = 0;
         int len = input.length(), i;
 
-        for(i = 0; i < len && !currentState.equals("error"); i++) {
+        for(i = offset; i < len && !currentState.equals("error"); i++) {
             char currentChar = input.charAt(i);
             HashMap<Character, String> currentMap = transitions.get(currentState);
 
@@ -81,10 +81,14 @@ abstract public class TokenReader {
         }
 
         if(lastSuccessIndex > 0)
-            return input.substring(0, lastSuccessIndex + 1);
+            return input.substring(offset, lastSuccessIndex + 1);
         else
             return null;
     }
 
-    abstract Token tryReadToken(String input);
+    abstract Token tryReadToken(String input, int offset);
+    
+    public Token tryReadToken(String input) {
+        return tryReadToken(input, 0);
+    }
 }

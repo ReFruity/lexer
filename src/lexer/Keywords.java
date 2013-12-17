@@ -18,13 +18,8 @@ public class Keywords {
     
     private static List keywordsList = Arrays.asList(keywords);
     
-    public Keywords () {
-        keywordsList = Arrays.asList(keywords);
-    }
-    
     public static boolean contain(String keyword) {
         return keywordsList.contains(keyword);
-        //TODO: Revise this operation
     }
     
     public static String[] get() {

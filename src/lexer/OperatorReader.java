@@ -9,10 +9,11 @@ public class OperatorReader extends TokenReader {
             "+=", "-=", "*=", "/=", "&=", "|=", "^=", "%=", "<<=", ">>=", ">>>=",
     };
     
-    public Token tryReadToken(String input) {
-        int len = input.length();
-        for(String i: Arrays.asList(operators)) {
-            if(len >= i.length() && i.equals(input.substring(0, i.length())))
+    public Token tryReadToken(String input, int offset) {
+        int len = input.length() - offset;
+        for(String i : Arrays.asList(operators)) {
+            int opLen = i.length();
+            if(len >= opLen && i.equals(input.substring(offset, offset + opLen)))
                 return new Token("op", i);
         }
         return null;

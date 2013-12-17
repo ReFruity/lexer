@@ -16,8 +16,8 @@ public class TraditionalCommentReader extends TokenReader {
         addGeneralTransition("asterisk", "comment");
     }
 
-    public Token tryReadToken(String input) {
-        String prefix = calculateMaxPrefix(input);
+    public Token tryReadToken(String input, int offset) {
+        String prefix = calculateMaxPrefix(input, offset);
         if(prefix != null)
             return new Token("tc", prefix);
         else

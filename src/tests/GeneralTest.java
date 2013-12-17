@@ -41,8 +41,6 @@ public class GeneralTest extends TestCase {
 
     private void testFile(String source) throws IOException {
         String entireFile = readEntireFile(source);
-        
-        //TokenReader[] kwReaders = buildKeywordReaders(Keywords.get());
                 
         TokenReader[] tokenReaders = {
             new AnnotationReader(),
@@ -59,8 +57,6 @@ public class GeneralTest extends TestCase {
             new TraditionalCommentReader(),
             new WhitespaceReader(),
         };
-        
-       // tokenReaders = joinArrays(tokenReaders, kwReaders);
 
         SimpleLexer lexer = new SimpleLexer(entireFile, tokenReaders);
         
@@ -78,7 +74,7 @@ public class GeneralTest extends TestCase {
         
         System.out.println("Number of tokens in test: " + tokensNum + ".");
         assertEquals(entireFile, resultString);
-        assertEquals(tokensNum >= entireFile.length()/30, true);
+        assertEquals(true, tokensNum >= entireFile.length()/30);
     }
 
     private String readEntireFile(String source) throws IOException {
@@ -92,22 +88,5 @@ public class GeneralTest extends TestCase {
         } while (read >= 0);
         System.out.println("Done reading file.");
         return contents.toString();
-    }
-    
-    private TokenReader[] joinArrays(TokenReader[] array1, TokenReader[] array2) {
-        TokenReader[] result = new TokenReader[array1.length + array2.length];
-        System.arraycopy(array1, 0, result, 0, array1.length);
-        System.arraycopy(array2, 0, result, array1.length, array2.length);
-        System.out.println("Done joining arrays.");
-        return result;
-    }
-    
-    private TokenReader[] buildKeywordReaders (String[] keywords) {
-        TokenReader[] kwReaders = new TokenReader[keywords.length];
-        for(int i = 0; i < keywords.length; i++) {
-            kwReaders[i] = new WordReader(keywords[i], false);
-        }
-        System.out.println("Done building keyword readers.");
-        return kwReaders;
     }
 }

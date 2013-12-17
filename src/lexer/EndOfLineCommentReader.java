@@ -13,8 +13,8 @@ public class EndOfLineCommentReader extends TokenReader {
         addGeneralTransition("comment", "comment");
     }
 
-    public Token tryReadToken(String input) {
-        String prefix = calculateMaxPrefix(input);
+    public Token tryReadToken(String input, int offset) {
+        String prefix = calculateMaxPrefix(input, offset);
         if(prefix != null)
             return new Token("eolc", prefix);
         else
