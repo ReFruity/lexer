@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Arrays;
 
 public class Keywords {
-    private static final String[] keywords = {
+    private final static String[] keywords = {
         "abstract", "continue", "for", "new", "switch", "assert", 
         "default", "if", "package", "synchronized", "boolean", "do", 
         "goto", "private", "this", "break", "double", "implements", 

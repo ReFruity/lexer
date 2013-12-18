@@ -1,36 +1,37 @@
 package lexer;
 
 public class SimpleLexer {
-    private String sourceString;
+    private final String sourceString;
+    private final int sourceLen;
     private TokenReader[] tokenReadersArray;
     private int offset;
 
     public SimpleLexer(String sourceString, TokenReader... tokenReadersArray) {
         this.sourceString = sourceString;
+        this.sourceLen = sourceString.length();
         this.tokenReadersArray = tokenReadersArray;
         offset = 0;
     }
 
     public Token readNextToken() throws UnknownTokenException {
-        Token maxToken = new Token("e", "");
+        Token maxToken = null;
         //String suffix = sourceString.substring(offset);
-        boolean tokenWasSuccessfullyRead = false;
         for (TokenReader i : tokenReadersArray) {
             Token currentToken = i.tryReadToken(sourceString, offset);
-            if (currentToken != null && currentToken.getText().length() > maxToken.getText().length()) {
+            if (currentToken != null && 
+                    (maxToken == null || currentToken.getText().length() > maxToken.getText().length())) {
                 maxToken = currentToken;
-                tokenWasSuccessfullyRead = true;
             }
         }
-        if (!tokenWasSuccessfullyRead){
-            throw new UnknownTokenException(sourceString);
+        if (maxToken == null){
+            throw new UnknownTokenException(sourceString.substring(offset));
         }
         offset += maxToken.getText().length();
         return maxToken;
     }
 
     public boolean hasNextTokens() {
-        return offset != sourceString.length();
+        return offset != sourceLen;
     }
 
     public class UnknownTokenException extends Exception {

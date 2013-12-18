@@ -39,6 +39,20 @@ public class GeneralTest extends TestCase {
         //Done: ??s -> 1m
     }
 
+    public void testAutomatonReaders() throws IOException {
+        testFile(".\\src\\javasrc\\Automaton.java.resource");
+        //560kb
+        //Done: ??s -> 52s;
+        //52s
+    }
+
+    public void testNonAutomatonReaders() throws IOException {
+        testFile(".\\src\\javasrc\\NonAutomaton.java.resource");
+        //532kb
+        //Done: ??s -> 2m 42s
+        //2m 49s
+    }
+    
     private void testFile(String source) throws IOException {
         String entireFile = readEntireFile(source);
                 
@@ -57,6 +71,28 @@ public class GeneralTest extends TestCase {
             new TraditionalCommentReader(),
             new WhitespaceReader(),
         };
+
+//        TokenReader[] tokenReaders = {
+//                // Non-Automaton Readers
+//                new IdentifierReader(),
+//                new IntReader(),
+//                new KeywordReader(),
+//                new NullReader(),
+//                new OperatorReader(),
+//                new SeparatorReader(),
+//                new WhitespaceReader(),
+//        };
+        
+//        TokenReader[] tokenReaders = {
+//                //Automaton Readers
+//                new AnnotationReader(),
+//                new CharacterReader(),
+//                new EndOfLineCommentReader(),
+//                new FloatReader(),
+//                new StringReader(),
+//                new TraditionalCommentReader(),
+//                new WhitespaceReader(),
+//        };
 
         SimpleLexer lexer = new SimpleLexer(entireFile, tokenReaders);
         
