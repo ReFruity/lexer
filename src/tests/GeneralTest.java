@@ -9,34 +9,34 @@ import java.io.IOException;
 public class GeneralTest extends TestCase {
     public void testTokenReader() throws IOException {
         testFile(".\\src\\javasrc\\TokenReader.java.resource");
-        //Done: 0.115s -> 0.063
+        //Done: 0.115s -> 0.063 -> 0.073
     }
     
     public void testCharacterLibrary() throws IOException {
         testFile(".\\src\\javasrc\\Character.java.resource");
-        //Done: 1m 22s -> 5s
+        //Done: 1m 22s -> 5s -> 3s
     }
 
     public void testFilesLibrary() throws IOException {
         testFile(".\\src\\javasrc\\Files.java.resource");
-        //Done: 11s -> 1s
+        //Done: 11s -> 1s -> 1s
     }
 
     public void testBigDecimalLibrary() throws IOException {
         testFile(".\\src\\javasrc\\BigDecimal.java.resource");
-        //Done: 39s -> 3s
+        //Done: 39s -> 3s -> 2s
     }
 
     public void testLargeLibrary() throws IOException {
         testFile(".\\src\\javasrc\\Large.java.resource");
         //1320kb
-        //Done: ??s -> 1m 49 s
+        //Done: ??s -> 1m 49s -> 1m 29s
     }
 
     public void test1mbLibrary() throws IOException {
         testFile(".\\src\\javasrc\\1mb.java.resource");
         //1000kb
-        //Done: ??s -> 1m
+        //Done: ??s -> 1m -> 44s
     }
 
     public void testAutomatonReaders() throws IOException {
@@ -72,35 +72,13 @@ public class GeneralTest extends TestCase {
             new WhitespaceReader(),
         };
 
-//        TokenReader[] tokenReaders = {
-//                // Non-Automaton Readers
-//                new IdentifierReader(),
-//                new IntReader(),
-//                new KeywordReader(),
-//                new NullReader(),
-//                new OperatorReader(),
-//                new SeparatorReader(),
-//                new WhitespaceReader(),
-//        };
-        
-//        TokenReader[] tokenReaders = {
-//                //Automaton Readers
-//                new AnnotationReader(),
-//                new CharacterReader(),
-//                new EndOfLineCommentReader(),
-//                new FloatReader(),
-//                new StringReader(),
-//                new TraditionalCommentReader(),
-//                new WhitespaceReader(),
-//        };
-
         SimpleLexer lexer = new SimpleLexer(entireFile, tokenReaders);
         
         String resultString = "";
         int tokensNum = 0;
         
         try {
-            while(lexer.hasNextTokens()) {
+            while(lexer.hasNextTokens()) { 
                 resultString += lexer.readNextToken().getText();
                 tokensNum++;
             }
